@@ -6,6 +6,10 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager manager;
 
+    private int _score;
+    private float _volume;
+
+
     private void Awake()
     {
         if (manager == null)
@@ -28,5 +32,16 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public int GetScore()
+    {
+        return _score;
+    }
+
+
+    public void AddScore(int score)
+    {
+        _score += score;
     }
 }
