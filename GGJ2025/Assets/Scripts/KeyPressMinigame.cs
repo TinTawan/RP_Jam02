@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class KeyPressMinigame : MonoBehaviour
 {
+    //Chewing Minigame 
     float chewTimer = 10f;
     float countDown = 0f;
 
@@ -13,6 +15,9 @@ public class KeyPressMinigame : MonoBehaviour
 
     KeyCode randKey;
 
+    //UI Section
+    [SerializeField] Slider countdownSlider;
+
     private void Start()
     {
         StartChewGame();
@@ -21,6 +26,8 @@ public class KeyPressMinigame : MonoBehaviour
     private void Update()
     {
         GenerateRandomKey();
+
+        countdownSlider.value = countDown;
     }
 
     void StartChewGame()
