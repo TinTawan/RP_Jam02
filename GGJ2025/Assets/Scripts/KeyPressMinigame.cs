@@ -109,22 +109,6 @@ public class KeyPressMinigame : MonoBehaviour
             keyText.text = randKey.ToString();
             scoreText.text = $"Score: {score}";
 
-            //Debug.Log($"Time Left: {System.Math.Round(countDown,2)}");
-
-            /*if (Input.GetKeyDown(randKey))
-            {
-                score++;
-
-                randKey = RandomKey();
-
-                Debug.Log($"Score: {score}");
-            }*/
-            /*else if(!Input.GetKeyDown(randKey))
-            {
-                score -= 0.5f;
-                Debug.Log($"Wrong button lose points: {score}");
-
-            }*/
 
             //check for any button key press to see if the correct or incorrect button is pressed
             foreach (KeyCode pressedKey in System.Enum.GetValues(typeof(KeyCode)))
@@ -193,5 +177,10 @@ public class KeyPressMinigame : MonoBehaviour
         Debug.Log(key.ToString());
 
         return key;
+    }
+
+    public bool GetGameStart()
+    {
+        return gameStart;
     }
 }
