@@ -104,7 +104,9 @@ public class KeyPressMinigame : MonoBehaviour
                         Debug.Log($"Score: {score}");
 
                         //keyText.transform.position = new Vector2(transform.position.x + Random.Range(-2,2), transform.position.y + Random.Range(-2, 2));
-                        
+
+                        popBubble = true;
+
                     }
                     else
                     {
@@ -116,10 +118,12 @@ public class KeyPressMinigame : MonoBehaviour
                         Debug.Log($"Wrong button lose points: {score}");
 
                         //keyText.transform.position = new Vector2(transform.position.x + Random.Range(-2, 2), transform.position.y + Random.Range(-2, 2));
+
+                        popBubble = true;
+
                     }
 
                     //spawnBubble = false;
-                    popBubble = true;
 
                 }
             }
@@ -159,7 +163,7 @@ public class KeyPressMinigame : MonoBehaviour
 
         Debug.Log(key.ToString());
         spawnBubble = true;
-        popBubble = false;
+        //popBubble = false;
 
         return key;
     }
@@ -181,6 +185,10 @@ public class KeyPressMinigame : MonoBehaviour
     public bool GetPopBubble()
     {
         return popBubble;
+    }
+    public void SetPopBubble(bool inBool)
+    {
+        popBubble = inBool;
     }
 
     public string GetKeyText()

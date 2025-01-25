@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 335607395729269794}
   - component: {fileID: 4510339095590859996}
   - component: {fileID: 9212319367849512586}
+  - component: {fileID: 2709639434469233785}
   m_Layer: 5
   m_Name: Bubble
   m_TagString: Untagged
@@ -89,6 +90,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc0a6599e9c77584baa85f7bf2d67673, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!95 &2709639434469233785
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8272002674366414978}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 128f7a5d8aaf31e43bb7d2947a444843, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &8612547329353476370
 GameObject:
   m_ObjectHideFlags: 0
