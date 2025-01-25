@@ -22,6 +22,8 @@ public class BubbleLetter : MonoBehaviour
         keyText.text = "";
 
         ps = FindObjectOfType<ParticleSystem>();
+
+        ps.Pause();
     }
 
     private void Update()
@@ -30,6 +32,11 @@ public class BubbleLetter : MonoBehaviour
         {
             keyText.text = kpMiniGame.GetKeyText();
 
+        }
+        else
+        {
+            ps.Clear();
+            Destroy(gameObject);
         }
 
         BubblePop();
@@ -42,6 +49,7 @@ public class BubbleLetter : MonoBehaviour
             transform.position = ps.transform.TransformPoint(particles[0].position);
 
         }
+
     }
 
 
@@ -50,10 +58,14 @@ public class BubbleLetter : MonoBehaviour
         if (kpMiniGame.GetPopBubble())
         {
             anim.SetBool("popped", true);
+            ps.Stop();
+            //ps.Clear();
+            //ps.Pause();
         }
         else
         {
             anim.SetBool("popped", false);
+            ps.Play();
 
         }
     }
@@ -61,6 +73,8 @@ public class BubbleLetter : MonoBehaviour
     private void OnDestroy()
     {
         kpMiniGame.SetPopBubble(false);
+
+        ps.Clear();
 
     }
 }
