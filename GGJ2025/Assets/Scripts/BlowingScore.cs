@@ -29,6 +29,9 @@ public class BlowingScore : MonoBehaviour
     private float _currentBtnTimer;
     private float _burstTimer;
 
+    //Random key input section
+    KeyCode randKey;
+
     
     private void Awake()
     {
@@ -42,7 +45,11 @@ public class BlowingScore : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        randKey = RandomKey();
+        Debug.Log(randKey.ToString());
+
+        _btnPressed = true;
+
     }
 
     // Update is called once per frame
@@ -61,17 +68,27 @@ public class BlowingScore : MonoBehaviour
             
             _chewingScore -= Time.deltaTime;
             _timerSlider.value = _chewingScore;
-            
+
             // Starts timer for next press (add random key for input here)
-            if (Input.GetKeyDown(KeyCode.W))
+            if (Input.GetKeyDown(randKey))
             {
                 _currentBtnTimer = _btnPressTimer;
-                  
-                _btnPressed = true;    
-                
-            }
 
-            
+                _btnPressed = true;
+
+            }
+            /*if (Input.GetKeyDown(randKey))
+            {
+                //correct key pressed
+                randKey = RandomKey();
+
+                _currentBtnTimer = _btnPressTimer;
+
+                _btnPressed = true;
+                
+            }*/
+
+
 
             // checks for button press to start timer
             if (_btnPressed)
@@ -117,11 +134,15 @@ public class BlowingScore : MonoBehaviour
     
     private void DecreaseScale()
     {
-        Vector3 scale;
-        scale.x = _bubble.transform.localScale.x - Time.deltaTime * blowRate/3;
-        scale.y = _bubble.transform.localScale.y - Time.deltaTime * blowRate/3;
-        scale.z = 0;
-        _bubble.transform.localScale = scale;
+        if(_bubble.transform.localScale.x > 0 && _bubble.transform.localScale.y > 0)
+        {
+            Vector3 scale;
+            scale.x = _bubble.transform.localScale.x - Time.deltaTime * blowRate / 3;
+            scale.y = _bubble.transform.localScale.y - Time.deltaTime * blowRate / 3;
+            scale.z = 0;
+            _bubble.transform.localScale = scale;
+        }
+        
 
     }
     
@@ -141,6 +162,7 @@ public class BlowingScore : MonoBehaviour
 
             // Here is where the bubbles spawn in.
 
+            randKey = RandomKey();
             StartCoroutine(Danger());
             Debug.Log("Press button");
         }
@@ -153,7 +175,7 @@ public class BlowingScore : MonoBehaviour
     {
         while(!_btnPressed)
         {
-            _inputText.text = "W";
+            _inputText.text = randKey.ToString();
             _dangerSign.SetActive(true);
             yield return new WaitForSeconds(_signTimer + (_signTimer/2));
             _dangerSign.SetActive(false);    
@@ -191,6 +213,36 @@ public class BlowingScore : MonoBehaviour
             }
         }
         ;
+    }
+
+
+    //Random key 
+    KeyCode RandomKey()
+    {
+        KeyCode key = KeyCode.None;
+
+        int rand = Random.Range(0, 4);
+        switch (rand)
+        {
+            case 0:
+                key = KeyCode.W;
+                break;
+            case 1:
+                key = KeyCode.A;
+                break;
+            case 2:
+                key = KeyCode.S;
+                break;
+            case 3:
+                key = KeyCode.D;
+                break;
+        }
+
+        Debug.Log(key.ToString());
+        //spawnBubble = true;
+        //popBubble = false;
+
+        return key;
     }
 
 }
