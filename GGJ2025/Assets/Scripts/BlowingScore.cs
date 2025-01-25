@@ -9,6 +9,7 @@ public class BlowingScore : MonoBehaviour
     [SerializeField] private GameObject _testSprite;
     [SerializeField] private float blowRate;
     [SerializeField] private Slider _timerSlider;
+    private bool _pressBtn = false;
 
     
     private void Awake()
@@ -39,7 +40,12 @@ public class BlowingScore : MonoBehaviour
             _timerSlider.value = _chewingScore;
             print(_chewingScore);
 
-            if (Input.GetKey(KeyCode.Space))
+            if (Input.GetKeyDown(KeyCode.W))
+            {
+                _pressBtn = true;
+            }
+
+            if (Input.GetKey(KeyCode.Space) && _pressBtn)
             {
                 Debug.Log("Blowing Bubble Gum");
                 IncreaseScale();
