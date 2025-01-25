@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class KeyPressMinigame : MonoBehaviour
 {
+    //Chewing Minigame 
     float chewTimer = 10f;
     float countDown = 0f;
 
@@ -13,6 +15,9 @@ public class KeyPressMinigame : MonoBehaviour
 
     KeyCode randKey;
 
+    //UI Section
+    [SerializeField] Slider countdownSlider;
+
     private void Start()
     {
         StartChewGame();
@@ -21,6 +26,8 @@ public class KeyPressMinigame : MonoBehaviour
     private void Update()
     {
         GenerateRandomKey();
+
+        countdownSlider.value = countDown;
     }
 
     void StartChewGame()
@@ -44,20 +51,46 @@ public class KeyPressMinigame : MonoBehaviour
             countDown -= Time.deltaTime;
             //Debug.Log($"Time Left: {System.Math.Round(countDown,2)}");
 
-            if (Input.GetKeyDown(randKey))
+            /*if (Input.GetKeyDown(randKey))
             {
                 score++;
 
                 randKey = RandomKey();
 
                 Debug.Log($"Score: {score}");
-            }
+            }*/
             /*else if(!Input.GetKeyDown(randKey))
             {
                 score -= 0.5f;
                 Debug.Log($"Wrong button lose points: {score}");
 
             }*/
+
+            //check for any button key press to see if the correct or incorrect button is pressed
+            foreach (KeyCode pressedKey in System.Enum.GetValues(typeof(KeyCode)))
+            {
+                if (Input.GetKeyDown(pressedKey))
+                {
+                    if (pressedKey == randKey)
+                    {
+                        score++;
+
+                        randKey = RandomKey();
+
+                        Debug.Log($"Score: {score}");
+
+                        
+                    }
+                    else
+                    {
+                        //Debug.Log("Wrong Key");
+
+                        score -= 0.5f;
+                        Debug.Log($"Wrong button lose points: {score}");
+                    }
+                }
+            }
+
         }
         else
         {
