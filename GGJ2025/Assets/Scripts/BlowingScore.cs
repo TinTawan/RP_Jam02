@@ -8,6 +8,7 @@ public class BlowingScore : MonoBehaviour
     [Header("References")]
     [SerializeField] private GameObject _bubble;
     [SerializeField] private GameObject _dangerSign;
+    [SerializeField] private Animator dangerAnim;
 
     [Header("UI References")]
     [SerializeField] private Slider _timerSlider;
@@ -17,7 +18,7 @@ public class BlowingScore : MonoBehaviour
     [Header("Values")]
     [SerializeField] private float blowRate;
     [SerializeField] private float _btnPressTimer;
-    [SerializeField] private float _signTimer;
+    //[SerializeField] private float _signTimer;
     [SerializeField] private float _burstDuration;  
     [SerializeField] private Color _startColour;
     [SerializeField] private Color _endColour;
@@ -35,7 +36,11 @@ public class BlowingScore : MonoBehaviour
     //countdown start game
     bool gameStart = false;
 
-    
+    //Bubble moving particle
+    ParticleSystem ps;
+    ParticleSystem.Particle[] particles;
+
+
     private void Awake()
     {
         _chewingScore = GameManager.GetChewScore();
@@ -43,6 +48,8 @@ public class BlowingScore : MonoBehaviour
         _timerSlider.value = _timerSlider.maxValue;
 
         _dangerSign_img = _dangerSign.GetComponent<Image>();
+
+        ps = FindObjectOfType<ParticleSystem>();
     }
 
     // Start is called before the first frame update
@@ -50,6 +57,7 @@ public class BlowingScore : MonoBehaviour
     {
         StartCoroutine(StartGame());
 
+        ps.Pause();
     }
 
     // Update is called once per frame
@@ -60,7 +68,21 @@ public class BlowingScore : MonoBehaviour
             BlowingTimer();
             _scoreText.text = $"Score: {(int)System.Math.Round(_bubble.transform.localScale.x * 100, 2)}";
         }
-        
+        else
+        {
+            ps.Clear();
+        }
+
+
+        particles = new ParticleSystem.Particle[ps.main.maxParticles];
+
+        int count = ps.GetParticles(particles);
+        if (count > 0)
+        {
+            _dangerSign.transform.position = ps.transform.TransformPoint(particles[0].position);
+
+        }
+
     }
 
     IEnumerator StartGame()
@@ -98,19 +120,11 @@ public class BlowingScore : MonoBehaviour
 
                 _btnPressed = true;
 
+                StartCoroutine(HideDangerBubble());
+
+                _burstTimer = 0f;   
+
             }
-            /*if (Input.GetKeyDown(randKey))
-            {
-                //correct key pressed
-                randKey = RandomKey();
-
-                _currentBtnTimer = _btnPressTimer;
-
-                _btnPressed = true;
-                
-            }*/
-
-
 
             // checks for button press to start timer
             if (_btnPressed)
@@ -142,6 +156,17 @@ public class BlowingScore : MonoBehaviour
             _dangerSign.SetActive(false);
         }
 
+    }
+
+    IEnumerator HideDangerBubble()
+    {
+        dangerAnim.SetBool("popped", true);
+        ps.Stop();
+
+        yield return new WaitForSeconds(0.25f);
+
+        _dangerSign.SetActive(false);
+        ps.Clear();
     }
 
     private void IncreaseScale()
@@ -185,6 +210,8 @@ public class BlowingScore : MonoBehaviour
             // Here is where the bubbles spawn in.
 
             randKey = RandomKey();
+            
+
             StartCoroutine(Danger());
             Debug.Log("Press button");
         }
@@ -195,14 +222,15 @@ public class BlowingScore : MonoBehaviour
     // just for danger sign blinking
     private IEnumerator Danger()
     {
-        while(!_btnPressed)
-        {
-            _inputText.text = randKey.ToString();
-            _dangerSign.SetActive(true);
-            yield return new WaitForSeconds(_signTimer + (_signTimer/2));
-            _dangerSign.SetActive(false);    
-            yield return new WaitForSeconds(_signTimer);
-        }
+        
+        dangerAnim.SetBool("popped", false);
+        ps.Play();
+
+        _inputText.text = randKey.ToString();
+        _dangerSign.SetActive(true);
+        yield return null;
+
+
     }
 
     private void CheckForSpacePress()
@@ -261,8 +289,6 @@ public class BlowingScore : MonoBehaviour
         }
 
         Debug.Log(key.ToString());
-        //spawnBubble = true;
-        //popBubble = false;
 
         return key;
     }
