@@ -6,7 +6,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager manager;
 
-    private static int _score;
+    private static int _score = 12;
     private static float _volume;
 
 
