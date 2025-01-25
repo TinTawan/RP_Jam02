@@ -1663,7 +1663,7 @@ GameObject:
   - component: {fileID: 1767675568}
   - component: {fileID: 1767675567}
   m_Layer: 0
-  m_Name: BubbleFloat_testParticle
+  m_Name: BubbleFloat_particle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
