@@ -11,7 +11,7 @@ public class BubbleManChomp : MonoBehaviour
 
     [SerializeField] float chompTime = 0.25f;
 
-    bool biting;
+    bool biteDown, biteUp, biteLeft, biteRight;
 
     private void Start()
     {
@@ -26,40 +26,59 @@ public class BubbleManChomp : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.W))
         {
-            biting = true;
+            biteUp = true;
+
+        }
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            biteDown = true;
+
         }
 
-        if (biting)
+        if (biteDown)
         {
             ChompDown();
         }
+        if (biteUp)
+        {
+            ChompUp();
+        }
     }
+
+    
+
+    void ChompUp()
+    {
+        bottomTeeth.transform.position = Vector2.Lerp(bottomTeeth.transform.position, bottomMoveTo.position, chompTime);
+
+        StartCoroutine(ResetChompUp());
+
+    }
+
+    IEnumerator ResetChompUp()
+    {
+        yield return new WaitForSeconds(chompTime);
+
+        biteUp = false;
+
+        bottomTeeth.transform.position = bottomOrigin;
+    }
+
 
     void ChompDown()
     {
-        topTeeth.transform.position = Vector2.Lerp(topTeeth.transform.position, topMoveTo.position, /*Time.deltaTime * */chompTime);
-        bottomTeeth.transform.position = Vector2.Lerp(bottomTeeth.transform.position, bottomMoveTo.position, /*Time.deltaTime * */chompTime);
+        topTeeth.transform.position = Vector2.Lerp(topTeeth.transform.position, topMoveTo.position, chompTime);
 
-        StartCoroutine(Bite());
+        StartCoroutine(ResetChompDown());
 
     }
-
-    IEnumerator Bite()
+    IEnumerator ResetChompDown()
     {
-        //topTeeth.transform.position = topMoveTo.position;
-        //bottomTeeth.transform.position = bottomMoveTo.position;
-
-        //topTeeth.transform.position = Vector2.Lerp(topOrigin, topMoveTo.position, Time.deltaTime * chompTime);
-        //bottomTeeth.transform.position = Vector2.Lerp(bottomOrigin, bottomMoveTo.position, Time.deltaTime * chompTime);
-
-
-
         yield return new WaitForSeconds(chompTime);
 
-        biting = false;
+        biteDown = false;
 
         topTeeth.transform.position = topOrigin;
-        bottomTeeth.transform.position = bottomOrigin;
 
     }
 }
