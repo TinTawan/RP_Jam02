@@ -12,6 +12,7 @@ public class BlowingScore : MonoBehaviour
     [Header("UI References")]
     [SerializeField] private Slider _timerSlider;
     [SerializeField] private TextMeshProUGUI _scoreText;
+    [SerializeField] private TextMeshProUGUI _inputText;
 
     [Header("Values")]
     [SerializeField] private float blowRate;
@@ -47,9 +48,8 @@ public class BlowingScore : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        BlowingTimer();
-
-        _scoreText.text = $"Score: { System.Math.Round(_bubble.transform.localScale.x, 2) }";
+        BlowingTimer(); 
+        _scoreText.text = $"Score: { (int)System.Math.Round(_bubble.transform.localScale.x * 100, 2) }";
     }
 
     private void BlowingTimer()
@@ -97,6 +97,10 @@ public class BlowingScore : MonoBehaviour
         {
             // Debug.Log("Times up!");
             // Game Over
+            // save score
+            // "Win condition"
+            StopAllCoroutines();
+            _dangerSign.SetActive(false);
         }
 
     }
@@ -149,6 +153,7 @@ public class BlowingScore : MonoBehaviour
     {
         while(!_btnPressed)
         {
+            _inputText.text = "W";
             _dangerSign.SetActive(true);
             yield return new WaitForSeconds(_signTimer + (_signTimer/2));
             _dangerSign.SetActive(false);    
@@ -170,6 +175,11 @@ public class BlowingScore : MonoBehaviour
                 {
                     Debug.Log("LOSER!!!");
                     // Bubble pops here
+                    _chewingScore = 0f;
+                    // Save score here a
+                    // Lose Condition
+                    StopAllCoroutines();
+                    _dangerSign.SetActive(false);
                 }
 
             }
@@ -180,7 +190,7 @@ public class BlowingScore : MonoBehaviour
                 _burstTimer = 0f;
             }
         }
-        // _burstTimer = 0f;
+        ;
     }
 
 }
