@@ -1,18 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEditor.Search;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BlowingScore : MonoBehaviour
 {
     private float _chewingScore;
     [SerializeField] private GameObject _testSprite;
+    [SerializeField] private float blowRate;
+    [SerializeField] private Slider _timerSlider;
 
     
     private void Awake()
     {
         _chewingScore = GameManager.GetScore();
+        _timerSlider.maxValue = _chewingScore;
+        _timerSlider.value = _timerSlider.maxValue;
     }
 
     // Start is called before the first frame update
@@ -33,6 +36,7 @@ public class BlowingScore : MonoBehaviour
         if (_chewingScore > 0f)
         {
             _chewingScore -= Time.deltaTime;
+            _timerSlider.value = _chewingScore;
             print(_chewingScore);
 
             if (Input.GetKey(KeyCode.Space))
@@ -62,10 +66,9 @@ public class BlowingScore : MonoBehaviour
 
     private void IncreaseScale()
     {
-        //_testSprite.transform.localScale = Time.deltaTime * 2;
         Vector3 scale;
-        scale.x = _testSprite.transform.localScale.x + Time.deltaTime * 2;
-        scale.y = _testSprite.transform.localScale.y + Time.deltaTime * 2;
+        scale.x = _testSprite.transform.localScale.x + Time.deltaTime * blowRate;
+        scale.y = _testSprite.transform.localScale.y + Time.deltaTime * blowRate;
         scale.z = 0;
         _testSprite.transform.localScale = scale;
 
