@@ -13,7 +13,7 @@ public class BlowingScore : MonoBehaviour
     
     private void Awake()
     {
-        _chewingScore = GameManager.GetScore();
+        _chewingScore = GameManager.GetChewScore();
         _timerSlider.maxValue = _chewingScore;
         _timerSlider.value = _timerSlider.maxValue;
     }
@@ -44,6 +44,13 @@ public class BlowingScore : MonoBehaviour
                 Debug.Log("Blowing Bubble Gum");
                 IncreaseScale();
             }
+
+            // show button to press 
+            // if(btn pressed)
+            //  can still press space
+            // else
+            // cant press space
+
             // If scale is too big move camera backwards 
             // while pressing space
             // increase scale by delta time
