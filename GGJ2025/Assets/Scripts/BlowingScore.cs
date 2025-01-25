@@ -1,19 +1,33 @@
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting.Antlr3.Runtime.Tree;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class BlowingScore : MonoBehaviour
 {
-    private float _chewingScore;
-    [SerializeField] private GameObject _testSprite;
-    [SerializeField] private float blowRate;
+    [Header("References")]
+    [SerializeField] private GameObject _bubble;
+    [SerializeField] private GameObject _dangerSign;
+
+    [Header("UI References")]
     [SerializeField] private Slider _timerSlider;
-    private bool _pressBtn = false;
+    [SerializeField] private TextMeshProUGUI _scoreText;
+    [SerializeField] private TextMeshProUGUI _inputText;
+
+    [Header("Values")]
+    [SerializeField] private float blowRate;
     [SerializeField] private float _btnPressTimer;
+    [SerializeField] private float _signTimer;
+    [SerializeField] private float _burstDuration;  
+    [SerializeField] private Color _startColour;
+    [SerializeField] private Color _endColour;
+
+    private float _chewingScore;
+    private bool _btnPressed = false;
+    private Image _dangerSign_img;
 
     private float _currentBtnTimer;
+    private float _burstTimer;
 
     
     private void Awake()
@@ -21,6 +35,8 @@ public class BlowingScore : MonoBehaviour
         _chewingScore = GameManager.GetChewScore();
         _timerSlider.maxValue = _chewingScore;
         _timerSlider.value = _timerSlider.maxValue;
+
+        _dangerSign_img = _dangerSign.GetComponent<Image>();
     }
 
     // Start is called before the first frame update
@@ -32,7 +48,8 @@ public class BlowingScore : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        BlowingTimer();
+        BlowingTimer(); 
+        _scoreText.text = $"Score: { (int)System.Math.Round(_bubble.transform.localScale.x * 100, 2) }";
     }
 
     private void BlowingTimer()
@@ -40,36 +57,50 @@ public class BlowingScore : MonoBehaviour
         // takes the score from the chewing phase to use as a timer.
         if (_chewingScore > 0f)
         {
+            CheckForSpacePress();
+            
             _chewingScore -= Time.deltaTime;
             _timerSlider.value = _chewingScore;
             
-            // Starts timer for next press 
+            // Starts timer for next press (add random key for input here)
             if (Input.GetKeyDown(KeyCode.W))
             {
                 _currentBtnTimer = _btnPressTimer;
-                _pressBtn = true;    
+                  
+                _btnPressed = true;    
                 
             }
 
+            
+
             // checks for button press to start timer
-            if (_pressBtn)
+            if (_btnPressed)
             {   
                 BtnTimer();   
             }
             
             // To blow the bubblegum
-            if (Input.GetKey(KeyCode.Space) && _pressBtn)
+            if (Input.GetKey(KeyCode.Space) && _btnPressed)
             {
-                Debug.Log("Blowing Bubble Gum");
+                // Debug.Log("Blowing Bubble Gum");
                 IncreaseScale();
 
+            }
+            else
+            {
+                DecreaseScale();
             }
 
 
         }
         else
         {
-            Debug.Log("Times up!");
+            // Debug.Log("Times up!");
+            // Game Over
+            // save score
+            // "Win condition"
+            StopAllCoroutines();
+            _dangerSign.SetActive(false);
         }
 
     }
@@ -77,13 +108,25 @@ public class BlowingScore : MonoBehaviour
     private void IncreaseScale()
     {
         Vector3 scale;
-        scale.x = _testSprite.transform.localScale.x + Time.deltaTime * blowRate;
-        scale.y = _testSprite.transform.localScale.y + Time.deltaTime * blowRate;
+        scale.x = _bubble.transform.localScale.x + Time.deltaTime * blowRate;
+        scale.y = _bubble.transform.localScale.y + Time.deltaTime * blowRate;
         scale.z = 0;
-        _testSprite.transform.localScale = scale;
+        _bubble.transform.localScale = scale;
 
     }
+    
+    private void DecreaseScale()
+    {
+        Vector3 scale;
+        scale.x = _bubble.transform.localScale.x - Time.deltaTime * blowRate/3;
+        scale.y = _bubble.transform.localScale.y - Time.deltaTime * blowRate/3;
+        scale.z = 0;
+        _bubble.transform.localScale = scale;
 
+    }
+    
+
+    // Timer between each button press 
     private void BtnTimer()
     {   
         if (_currentBtnTimer > 0)
@@ -94,11 +137,60 @@ public class BlowingScore : MonoBehaviour
         }
         if (_currentBtnTimer <= 0 )
         {
-            _pressBtn = false;
+            _btnPressed = false;
+
+            // Here is where the bubbles spawn in.
+
+            StartCoroutine(Danger());
             Debug.Log("Press button");
         }
         
 
+    }
+
+    // just for danger sign blinking
+    private IEnumerator Danger()
+    {
+        while(!_btnPressed)
+        {
+            _inputText.text = "W";
+            _dangerSign.SetActive(true);
+            yield return new WaitForSeconds(_signTimer + (_signTimer/2));
+            _dangerSign.SetActive(false);    
+            yield return new WaitForSeconds(_signTimer);
+        }
+    }
+
+    private void CheckForSpacePress()
+    {
+        if (!_btnPressed)
+        {
+            if (Input.GetKey(KeyCode.Space))
+            {
+                _burstTimer += Time.deltaTime;
+                _dangerSign_img.color = Color.Lerp(_startColour, _endColour, _burstTimer);
+                Debug.Log("Burst Timer" + _burstTimer);
+
+                if (_burstTimer >= _burstDuration)
+                {
+                    Debug.Log("LOSER!!!");
+                    // Bubble pops here
+                    _chewingScore = 0f;
+                    // Save score here a
+                    // Lose Condition
+                    StopAllCoroutines();
+                    _dangerSign.SetActive(false);
+                }
+
+            }
+            else
+            {   
+                // Resets colour and burst timer
+                _dangerSign_img.color = Color.Lerp(_endColour, _startColour, _burstDuration);
+                _burstTimer = 0f;
+            }
+        }
+        ;
     }
 
 }
