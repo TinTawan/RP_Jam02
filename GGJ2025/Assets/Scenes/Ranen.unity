@@ -417,6 +417,7 @@ MonoBehaviour:
   _testSprite: {fileID: 1267403428}
   blowRate: 1.5
   _timerSlider: {fileID: 1499679473}
+  _btnPressTimer: 3
 --- !u!4 &1383499610
 Transform:
   m_ObjectHideFlags: 0

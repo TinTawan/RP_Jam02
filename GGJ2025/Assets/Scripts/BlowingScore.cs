@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting.Antlr3.Runtime.Tree;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,6 +11,9 @@ public class BlowingScore : MonoBehaviour
     [SerializeField] private float blowRate;
     [SerializeField] private Slider _timerSlider;
     private bool _pressBtn = false;
+    [SerializeField] private float _btnPressTimer;
+
+    private float _currentBtnTimer;
 
     
     private void Awake()
@@ -22,7 +26,7 @@ public class BlowingScore : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        // _pressBtn = true;
     }
 
     // Update is called once per frame
@@ -38,18 +42,35 @@ public class BlowingScore : MonoBehaviour
         {
             _chewingScore -= Time.deltaTime;
             _timerSlider.value = _chewingScore;
-            print(_chewingScore);
-
+            // print(_chewingScore);
+            
             if (Input.GetKeyDown(KeyCode.W))
             {
-                _pressBtn = true;
+                _currentBtnTimer = _btnPressTimer;
+                _pressBtn = true;    
+                
             }
+
+            if (_pressBtn)
+            {
+                // timer between each press
+                // when timer reaches 0 _pressBtn = false
+                // then need to press button again.
+                
+                BtnTimer();
+                
+            }
+            
 
             if (Input.GetKey(KeyCode.Space) && _pressBtn)
             {
                 Debug.Log("Blowing Bubble Gum");
                 IncreaseScale();
+
             }
+           
+
+            
 
             // show button to press 
             // if(btn pressed)
@@ -84,6 +105,26 @@ public class BlowingScore : MonoBehaviour
         scale.y = _testSprite.transform.localScale.y + Time.deltaTime * blowRate;
         scale.z = 0;
         _testSprite.transform.localScale = scale;
+
+    }
+
+    private void BtnTimer()
+    {
+        
+        // _pressBtn = true;
+        if (_currentBtnTimer > 0)
+        {
+            _currentBtnTimer -= Time.deltaTime;
+            print(_currentBtnTimer);
+            // _pressBtn = true;
+
+        }
+        if (_currentBtnTimer <= 0 )
+        {
+            _pressBtn = false;
+            Debug.Log("Press button");
+        }
+        
 
     }
 
