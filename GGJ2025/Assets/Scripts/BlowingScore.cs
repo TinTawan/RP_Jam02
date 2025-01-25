@@ -26,7 +26,7 @@ public class BlowingScore : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        // _pressBtn = true;
+        
     }
 
     // Update is called once per frame
@@ -37,13 +37,13 @@ public class BlowingScore : MonoBehaviour
 
     private void BlowingTimer()
     {
-        
+        // takes the score from the chewing phase to use as a timer.
         if (_chewingScore > 0f)
         {
             _chewingScore -= Time.deltaTime;
             _timerSlider.value = _chewingScore;
-            // print(_chewingScore);
             
+            // Starts timer for next press 
             if (Input.GetKeyDown(KeyCode.W))
             {
                 _currentBtnTimer = _btnPressTimer;
@@ -51,43 +51,19 @@ public class BlowingScore : MonoBehaviour
                 
             }
 
+            // checks for button press to start timer
             if (_pressBtn)
-            {
-                // timer between each press
-                // when timer reaches 0 _pressBtn = false
-                // then need to press button again.
-                
-                BtnTimer();
-                
+            {   
+                BtnTimer();   
             }
             
-
+            // To blow the bubblegum
             if (Input.GetKey(KeyCode.Space) && _pressBtn)
             {
                 Debug.Log("Blowing Bubble Gum");
                 IncreaseScale();
 
             }
-           
-
-            
-
-            // show button to press 
-            // if(btn pressed)
-            //  can still press space
-            // else
-            // cant press space
-
-            // If scale is too big move camera backwards 
-            // while pressing space
-            // increase scale by delta time
-            // when button press comes up
-            // space can sitll be pressed 
-            // timer for button press (short)
-            // if not pressed 
-            // bubble pops
-            // else 
-            // can keeping blowing bubble
 
 
         }
@@ -109,14 +85,11 @@ public class BlowingScore : MonoBehaviour
     }
 
     private void BtnTimer()
-    {
-        
-        // _pressBtn = true;
+    {   
         if (_currentBtnTimer > 0)
         {
             _currentBtnTimer -= Time.deltaTime;
             print(_currentBtnTimer);
-            // _pressBtn = true;
 
         }
         if (_currentBtnTimer <= 0 )
