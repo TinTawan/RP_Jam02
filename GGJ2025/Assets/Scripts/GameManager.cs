@@ -7,10 +7,10 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager manager;
 
-    private static int _chewScore = 12;
+    private static float _chewScore = 12;
     private static float _volume;
 
-    private static int _blowScore;
+    private static float _blowScore;
 
 
     private void Awake()
@@ -57,12 +57,12 @@ public class GameManager : MonoBehaviour
         _volume = vol;
     }
 
-    public static void AddChewScore(int score)
+    public static void AddChewScore(float score)
     {
         _chewScore += score;
     }
 
-    public static void AddBlowScore(int score)
+    public static void AddBlowScore(float score)
     {
         _blowScore += score;
     }
