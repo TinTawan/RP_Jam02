@@ -13,13 +13,13 @@ public class KeyPressMinigame : MonoBehaviour
 
     float score = 0;
 
-    bool gameStart = false;
+    bool gameStart = false, spawnBubble = false, popBubble = false;
 
     KeyCode randKey;
 
     //UI Section
     [SerializeField] Slider countdownSlider;
-    [SerializeField] TextMeshProUGUI keyText, scoreText;
+    [SerializeField] TextMeshProUGUI scoreText;
 
     private void Start()
     {
@@ -38,18 +38,9 @@ public class KeyPressMinigame : MonoBehaviour
 
     }
 
-    /*void StartChewGame()
-    {
-        chewing = true;
-        randKey = RandomKey();
-        countDown = chewTimer;
-
-        keyText.text = "";
-    }*/
 
     IEnumerator StartGame()
     {
-        keyText.text = "";
 
         scoreText.text = "3";
         yield return new WaitForSeconds(1);
@@ -71,8 +62,6 @@ public class KeyPressMinigame : MonoBehaviour
 
         scoreText.text = $"Final score: {score}";
         countDown = 0;
-
-        keyText.text = "";
 
         //save score to manager
         Debug.Log("Times Up");
@@ -128,6 +117,10 @@ public class KeyPressMinigame : MonoBehaviour
 
                         //keyText.transform.position = new Vector2(transform.position.x + Random.Range(-2, 2), transform.position.y + Random.Range(-2, 2));
                     }
+
+                    //spawnBubble = false;
+                    popBubble = true;
+
                 }
             }
 
@@ -165,6 +158,8 @@ public class KeyPressMinigame : MonoBehaviour
         }
 
         Debug.Log(key.ToString());
+        spawnBubble = true;
+        popBubble = false;
 
         return key;
     }
@@ -174,8 +169,24 @@ public class KeyPressMinigame : MonoBehaviour
         return gameStart;
     }
 
+    public bool GetSpawnBubble()
+    {
+        return spawnBubble;
+    }
+    public void SetSpawnBubble(bool inBool)
+    {
+        spawnBubble = inBool;
+    }
+
+    public bool GetPopBubble()
+    {
+        return popBubble;
+    }
+
     public string GetKeyText()
     {
         return randKey.ToString();
     }
+
+
 }

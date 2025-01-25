@@ -4,15 +4,34 @@ using UnityEngine;
 
 public class SpawnBubble : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] Transform spawnLocation;
+    [SerializeField] GameObject bubblePrefab;
+
+    KeyPressMinigame kpMinigame;
+
+    GameObject spawnedBubble;
+
+    private void Start()
     {
-        
+        kpMinigame = FindObjectOfType<KeyPressMinigame>();
+
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        
+        if (kpMinigame.GetSpawnBubble())
+        {
+            spawnedBubble = Instantiate(bubblePrefab, transform.position, Quaternion.identity, transform);
+            //Debug.Log("Spawned bubble");
+            kpMinigame.SetSpawnBubble(false);
+        }
+
+        if (kpMinigame.GetPopBubble())
+        {
+            Destroy(spawnedBubble);
+        }
     }
+
+    
+
 }
