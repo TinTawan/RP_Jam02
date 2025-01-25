@@ -6,8 +6,8 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager manager;
 
-    private int _score;
-    private float _volume;
+    private static int _score;
+    private static float _volume;
 
 
     private void Awake()
@@ -34,13 +34,13 @@ public class GameManager : MonoBehaviour
         
     }
 
-    public int GetScore()
+    public static float GetScore()
     {
         return _score;
     }
 
 
-    public void AddScore(int score)
+    public static void AddScore(int score)
     {
         _score += score;
     }

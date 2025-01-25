@@ -4,14 +4,15 @@ using UnityEngine;
 
 public class BlowingScore : MonoBehaviour
 {
-    private float _chewingScore = 12;
+    private float _chewingScore;
 
+    
 
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        _chewingScore = GameManager.GetScore();
     }
 
     // Update is called once per frame
