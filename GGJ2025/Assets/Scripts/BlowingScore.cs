@@ -1,26 +1,27 @@
 using System.Collections;
-using System.Collections.Generic;
-using Unity.Burst;
-using Unity.VisualScripting.Antlr3.Runtime.Tree;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class BlowingScore : MonoBehaviour
 {
-    private float _chewingScore;
+    [Header("References")]
     [SerializeField] private GameObject _testSprite;
-    [SerializeField] private float blowRate;
     [SerializeField] private Slider _timerSlider;
-    private bool _btnPressed = false;
-    [SerializeField] private float _btnPressTimer;
     [SerializeField] private GameObject _dangerSign;
-    [SerializeField] private float _signTimer;
 
+    [Header("Values")]
+    [SerializeField] private float blowRate;
+    [SerializeField] private float _btnPressTimer;
+    [SerializeField] private float _signTimer;
+    [SerializeField] private float _burstDuration;  
+    [SerializeField] private Color _startColour;
+    [SerializeField] private Color _endColour;
+
+    private float _chewingScore;
+    private bool _btnPressed = false;
     private Image _dangerSign_img;
 
     private float _currentBtnTimer;
-    [SerializeField] private float _burstDuration;
-    private bool _isHoldingSpace = false;
     private float _burstTimer;
 
     
@@ -135,6 +136,7 @@ public class BlowingScore : MonoBehaviour
             if (Input.GetKey(KeyCode.Space))
             {
                 _burstTimer += Time.deltaTime;
+                _dangerSign_img.color = Color.Lerp(_startColour, _endColour, _burstTimer);
                 Debug.Log("Burst Timer" + _burstTimer);
 
                 if (_burstTimer >= _burstDuration)
@@ -144,7 +146,8 @@ public class BlowingScore : MonoBehaviour
 
             }
             else
-            {
+            {   
+                _dangerSign_img.color = Color.Lerp(_endColour, _startColour, _burstDuration);
                 _burstTimer = 0f;
             }
         }

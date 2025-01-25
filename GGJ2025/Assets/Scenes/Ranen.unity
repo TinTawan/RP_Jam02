@@ -490,12 +490,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _testSprite: {fileID: 1267403428}
-  blowRate: 1.5
   _timerSlider: {fileID: 1499679473}
-  _btnPressTimer: 3
   _dangerSign: {fileID: 412922501}
+  blowRate: 1.5
+  _btnPressTimer: 3
   _signTimer: 0.25
   _burstDuration: 3
+  _startColour: {r: 1, g: 0.9172699, b: 0, a: 1}
+  _endColour: {r: 1, g: 0, b: 0.043037415, a: 1}
 --- !u!4 &1383499610
 Transform:
   m_ObjectHideFlags: 0
