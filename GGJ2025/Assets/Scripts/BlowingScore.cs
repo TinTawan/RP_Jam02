@@ -1,13 +1,17 @@
 using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class BlowingScore : MonoBehaviour
 {
     [Header("References")]
-    [SerializeField] private GameObject _testSprite;
-    [SerializeField] private Slider _timerSlider;
+    [SerializeField] private GameObject _bubble;
     [SerializeField] private GameObject _dangerSign;
+
+    [Header("UI References")]
+    [SerializeField] private Slider _timerSlider;
+    [SerializeField] private TextMeshProUGUI _scoreText;
 
     [Header("Values")]
     [SerializeField] private float blowRate;
@@ -44,6 +48,8 @@ public class BlowingScore : MonoBehaviour
     void Update()
     {
         BlowingTimer();
+
+        _scoreText.text = $"Score: { System.Math.Round(_bubble.transform.localScale.x, 2) }";
     }
 
     private void BlowingTimer()
@@ -56,7 +62,7 @@ public class BlowingScore : MonoBehaviour
             _chewingScore -= Time.deltaTime;
             _timerSlider.value = _chewingScore;
             
-            // Starts timer for next press 
+            // Starts timer for next press (add random key for input here)
             if (Input.GetKeyDown(KeyCode.W))
             {
                 _currentBtnTimer = _btnPressTimer;
@@ -80,12 +86,17 @@ public class BlowingScore : MonoBehaviour
                 IncreaseScale();
 
             }
+            else
+            {
+                DecreaseScale();
+            }
 
 
         }
         else
         {
             // Debug.Log("Times up!");
+            // Game Over
         }
 
     }
@@ -93,13 +104,25 @@ public class BlowingScore : MonoBehaviour
     private void IncreaseScale()
     {
         Vector3 scale;
-        scale.x = _testSprite.transform.localScale.x + Time.deltaTime * blowRate;
-        scale.y = _testSprite.transform.localScale.y + Time.deltaTime * blowRate;
+        scale.x = _bubble.transform.localScale.x + Time.deltaTime * blowRate;
+        scale.y = _bubble.transform.localScale.y + Time.deltaTime * blowRate;
         scale.z = 0;
-        _testSprite.transform.localScale = scale;
+        _bubble.transform.localScale = scale;
 
     }
+    
+    private void DecreaseScale()
+    {
+        Vector3 scale;
+        scale.x = _bubble.transform.localScale.x - Time.deltaTime * blowRate/3;
+        scale.y = _bubble.transform.localScale.y - Time.deltaTime * blowRate/3;
+        scale.z = 0;
+        _bubble.transform.localScale = scale;
 
+    }
+    
+
+    // Timer between each button press 
     private void BtnTimer()
     {   
         if (_currentBtnTimer > 0)
@@ -111,6 +134,9 @@ public class BlowingScore : MonoBehaviour
         if (_currentBtnTimer <= 0 )
         {
             _btnPressed = false;
+
+            // Here is where the bubbles spawn in.
+
             StartCoroutine(Danger());
             Debug.Log("Press button");
         }
@@ -118,6 +144,7 @@ public class BlowingScore : MonoBehaviour
 
     }
 
+    // just for danger sign blinking
     private IEnumerator Danger()
     {
         while(!_btnPressed)
@@ -142,11 +169,13 @@ public class BlowingScore : MonoBehaviour
                 if (_burstTimer >= _burstDuration)
                 {
                     Debug.Log("LOSER!!!");
+                    // Bubble pops here
                 }
 
             }
             else
             {   
+                // Resets colour and burst timer
                 _dangerSign_img.color = Color.Lerp(_endColour, _startColour, _burstDuration);
                 _burstTimer = 0f;
             }
