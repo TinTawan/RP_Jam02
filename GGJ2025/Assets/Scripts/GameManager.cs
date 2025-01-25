@@ -7,7 +7,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager manager;
 
-    private static float _chewScore = 12;
+    private static float _chewScore = 0;
     private static float _volume;
 
     private static float _blowScore;

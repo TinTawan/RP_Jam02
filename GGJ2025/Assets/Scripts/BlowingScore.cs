@@ -11,7 +11,7 @@ public class BlowingScore : MonoBehaviour
 
     [Header("UI References")]
     [SerializeField] private Slider _timerSlider;
-    [SerializeField] private TextMeshProUGUI _scoreText;
+    [SerializeField] private TextMeshProUGUI _scoreText, countdownText;
     [SerializeField] private TextMeshProUGUI _inputText;
 
     [Header("Values")]
@@ -32,6 +32,9 @@ public class BlowingScore : MonoBehaviour
     //Random key input section
     KeyCode randKey;
 
+    //countdown start game
+    bool gameStart = false;
+
     
     private void Awake()
     {
@@ -45,18 +48,37 @@ public class BlowingScore : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        randKey = RandomKey();
-        Debug.Log(randKey.ToString());
-
-        _btnPressed = true;
+        StartCoroutine(StartGame());
 
     }
 
     // Update is called once per frame
     void Update()
     {
-        BlowingTimer(); 
-        _scoreText.text = $"Score: { (int)System.Math.Round(_bubble.transform.localScale.x * 100, 2) }";
+        if (gameStart)
+        {
+            BlowingTimer();
+            _scoreText.text = $"Score: {(int)System.Math.Round(_bubble.transform.localScale.x * 100, 2)}";
+        }
+        
+    }
+
+    IEnumerator StartGame()
+    {
+        countdownText.text = "3";
+        yield return new WaitForSeconds(1);
+        countdownText.text = "2";
+        yield return new WaitForSeconds(1);
+        countdownText.text = "1";
+        yield return new WaitForSeconds(1);
+        countdownText.text = "";
+
+        gameStart = true;
+
+        randKey = RandomKey();
+        Debug.Log(randKey.ToString());
+
+        _btnPressed = true;
     }
 
     private void BlowingTimer()
