@@ -13,7 +13,7 @@ public class KeyPressMinigame : MonoBehaviour
 
     float score = 0;
 
-    bool chewing = false, gameStart = false;
+    bool gameStart = false;
 
     KeyCode randKey;
 
@@ -58,26 +58,17 @@ public class KeyPressMinigame : MonoBehaviour
         scoreText.text = "1";
         yield return new WaitForSeconds(1);
 
-        chewing = true;
         gameStart = true;
         randKey = RandomKey();
         countDown = chewTimer;
 
     }
 
-    /*void EndChewGame()
-    {
-        chewing = false;
-        scoreText.text = $"Final score: {score}";
-        countDown = 0;
 
-        keyText.text = "";
-
-        //save score to manager and move to next scene
-    }*/
     IEnumerator EndChewGame()
     {
-        chewing = false;
+        gameStart = false;
+
         scoreText.text = $"Final score: {score}";
         countDown = 0;
 
@@ -86,14 +77,13 @@ public class KeyPressMinigame : MonoBehaviour
         //save score to manager
         Debug.Log("Times Up");
         yield return new WaitForSeconds(1);
-        keyText.transform.position = Vector3.zero;
-        keyText.text = "Press any key ...";
+        //keyText.text = "Press any key ...";
+
+        //GameManager.AddChewScore(score);
 
         //move to next scene
         if (Input.anyKeyDown)
         {
-
-
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 
         }
@@ -106,7 +96,7 @@ public class KeyPressMinigame : MonoBehaviour
         {
             countDown -= Time.deltaTime;
 
-            keyText.text = randKey.ToString();
+            //keyText.text = randKey.ToString();
             scoreText.text = $"Score: {score}";
 
 
@@ -124,7 +114,7 @@ public class KeyPressMinigame : MonoBehaviour
 
                         Debug.Log($"Score: {score}");
 
-                        keyText.transform.position = new Vector2(transform.position.x + Random.Range(-2,2), transform.position.y + Random.Range(-2, 2));
+                        //keyText.transform.position = new Vector2(transform.position.x + Random.Range(-2,2), transform.position.y + Random.Range(-2, 2));
                         
                     }
                     else
@@ -136,7 +126,7 @@ public class KeyPressMinigame : MonoBehaviour
 
                         Debug.Log($"Wrong button lose points: {score}");
 
-                        keyText.transform.position = new Vector2(transform.position.x + Random.Range(-2, 2), transform.position.y + Random.Range(-2, 2));
+                        //keyText.transform.position = new Vector2(transform.position.x + Random.Range(-2, 2), transform.position.y + Random.Range(-2, 2));
                     }
                 }
             }
@@ -182,5 +172,10 @@ public class KeyPressMinigame : MonoBehaviour
     public bool GetGameStart()
     {
         return gameStart;
+    }
+
+    public string GetKeyText()
+    {
+        return randKey.ToString();
     }
 }
