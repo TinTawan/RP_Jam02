@@ -13,13 +13,13 @@ public class KeyPressMinigame : MonoBehaviour
 
     float score = 0;
 
-    bool chewing = false, gameStart = false;
+    bool gameStart = false, spawnBubble = false, popBubble = false;
 
     KeyCode randKey;
 
     //UI Section
     [SerializeField] Slider countdownSlider;
-    [SerializeField] TextMeshProUGUI keyText, scoreText;
+    [SerializeField] TextMeshProUGUI scoreText;
 
     private void Start()
     {
@@ -38,18 +38,9 @@ public class KeyPressMinigame : MonoBehaviour
 
     }
 
-    /*void StartChewGame()
-    {
-        chewing = true;
-        randKey = RandomKey();
-        countDown = chewTimer;
-
-        keyText.text = "";
-    }*/
 
     IEnumerator StartGame()
     {
-        keyText.text = "";
 
         scoreText.text = "3";
         yield return new WaitForSeconds(1);
@@ -58,42 +49,30 @@ public class KeyPressMinigame : MonoBehaviour
         scoreText.text = "1";
         yield return new WaitForSeconds(1);
 
-        chewing = true;
         gameStart = true;
         randKey = RandomKey();
         countDown = chewTimer;
 
     }
 
-    /*void EndChewGame()
-    {
-        chewing = false;
-        scoreText.text = $"Final score: {score}";
-        countDown = 0;
 
-        keyText.text = "";
-
-        //save score to manager and move to next scene
-    }*/
     IEnumerator EndChewGame()
     {
-        chewing = false;
+        gameStart = false;
+
         scoreText.text = $"Final score: {score}";
         countDown = 0;
-
-        keyText.text = "";
 
         //save score to manager
         Debug.Log("Times Up");
         yield return new WaitForSeconds(1);
-        keyText.transform.position = Vector3.zero;
-        keyText.text = "Press any key ...";
+        //keyText.text = "Press any key ...";
+
+        //GameManager.AddChewScore(score);
 
         //move to next scene
         if (Input.anyKeyDown)
         {
-
-
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 
         }
@@ -106,25 +85,9 @@ public class KeyPressMinigame : MonoBehaviour
         {
             countDown -= Time.deltaTime;
 
-            keyText.text = randKey.ToString();
+            //keyText.text = randKey.ToString();
             scoreText.text = $"Score: {score}";
 
-            //Debug.Log($"Time Left: {System.Math.Round(countDown,2)}");
-
-            /*if (Input.GetKeyDown(randKey))
-            {
-                score++;
-
-                randKey = RandomKey();
-
-                Debug.Log($"Score: {score}");
-            }*/
-            /*else if(!Input.GetKeyDown(randKey))
-            {
-                score -= 0.5f;
-                Debug.Log($"Wrong button lose points: {score}");
-
-            }*/
 
             //check for any button key press to see if the correct or incorrect button is pressed
             foreach (KeyCode pressedKey in System.Enum.GetValues(typeof(KeyCode)))
@@ -140,8 +103,10 @@ public class KeyPressMinigame : MonoBehaviour
 
                         Debug.Log($"Score: {score}");
 
-                        keyText.transform.position = new Vector2(transform.position.x + Random.Range(-2,2), transform.position.y + Random.Range(-2, 2));
-                        
+                        //keyText.transform.position = new Vector2(transform.position.x + Random.Range(-2,2), transform.position.y + Random.Range(-2, 2));
+
+                        popBubble = true;
+
                     }
                     else
                     {
@@ -152,8 +117,14 @@ public class KeyPressMinigame : MonoBehaviour
 
                         Debug.Log($"Wrong button lose points: {score}");
 
-                        keyText.transform.position = new Vector2(transform.position.x + Random.Range(-2, 2), transform.position.y + Random.Range(-2, 2));
+                        //keyText.transform.position = new Vector2(transform.position.x + Random.Range(-2, 2), transform.position.y + Random.Range(-2, 2));
+
+                        popBubble = true;
+
                     }
+
+                    //spawnBubble = false;
+
                 }
             }
 
@@ -191,7 +162,39 @@ public class KeyPressMinigame : MonoBehaviour
         }
 
         Debug.Log(key.ToString());
+        spawnBubble = true;
+        //popBubble = false;
 
         return key;
     }
+
+    public bool GetGameStart()
+    {
+        return gameStart;
+    }
+
+    public bool GetSpawnBubble()
+    {
+        return spawnBubble;
+    }
+    public void SetSpawnBubble(bool inBool)
+    {
+        spawnBubble = inBool;
+    }
+
+    public bool GetPopBubble()
+    {
+        return popBubble;
+    }
+    public void SetPopBubble(bool inBool)
+    {
+        popBubble = inBool;
+    }
+
+    public string GetKeyText()
+    {
+        return randKey.ToString();
+    }
+
+
 }
