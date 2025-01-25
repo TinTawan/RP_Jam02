@@ -63,19 +63,16 @@ public class KeyPressMinigame : MonoBehaviour
         scoreText.text = $"Final score: {score}";
         countDown = 0;
 
-        //save score to manager
         Debug.Log("Times Up");
         yield return new WaitForSeconds(1);
-        //keyText.text = "Press any key ...";
 
+
+        //save score to manager
         //GameManager.AddChewScore(score);
 
         //move to next scene
-        if (Input.anyKeyDown)
-        {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 
-        }
 
     }
 
