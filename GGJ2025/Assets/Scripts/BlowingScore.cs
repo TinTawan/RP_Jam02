@@ -2,6 +2,7 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class BlowingScore : MonoBehaviour
 {
@@ -24,6 +25,7 @@ public class BlowingScore : MonoBehaviour
     [SerializeField] private Color _endColour;
 
     private float _chewingScore;
+    private int _blowScore;
     private bool _btnPressed = false;
     private Image _dangerSign_img;
 
@@ -35,6 +37,9 @@ public class BlowingScore : MonoBehaviour
 
     //countdown start game
     bool gameStart = false;
+
+    bool _gameEnd = false; // Checks for game to stop (weither win or lose)
+    bool _gameWon = false; // Checks if the game is won or lost
 
     //Bubble moving particle
     ParticleSystem ps;
@@ -66,11 +71,24 @@ public class BlowingScore : MonoBehaviour
         if (gameStart)
         {
             BlowingTimer();
-            _scoreText.text = $"Score: {(int)System.Math.Round(_bubble.transform.localScale.x * 100, 2)}";
+            _blowScore = (int)System.Math.Round(_bubble.transform.localScale.x * 100, 2);
+            _scoreText.text = $"Score: {_blowScore}";
         }
         else
         {
             ps.Clear();
+        }
+
+        // Check to change scene
+        if (_gameEnd && _gameWon)
+        {
+            // Debug.Log("Win");
+            StartCoroutine(EndGame(_gameWon));
+        }
+        if (_gameEnd && !_gameWon)
+        {
+            // Debug.Log("Lose");
+            StartCoroutine(EndGame(_gameWon));
         }
 
 
@@ -105,55 +123,56 @@ public class BlowingScore : MonoBehaviour
 
     private void BlowingTimer()
     {
-        // takes the score from the chewing phase to use as a timer.
-        if (_chewingScore > 0f)
+        if (!_gameEnd)
         {
-            CheckForSpacePress();
             
-            _chewingScore -= Time.deltaTime;
-            _timerSlider.value = _chewingScore;
-
-            // Starts timer for next press (add random key for input here)
-            if (Input.GetKeyDown(randKey))
+            // takes the score from the chewing phase to use as a timer.
+            if (_chewingScore > 0f)
             {
-                _currentBtnTimer = _btnPressTimer;
+                CheckForSpacePress();
+                
+                _chewingScore -= Time.deltaTime;
+                _timerSlider.value = _chewingScore;
 
-                _btnPressed = true;
+                // Starts timer for next press (add random key for input here)
+                if (Input.GetKeyDown(randKey))
+                {
+                    _currentBtnTimer = _btnPressTimer;
 
-                StartCoroutine(HideDangerBubble());
+                    _btnPressed = true;
 
-                _burstTimer = 0f;   
+                    StartCoroutine(HideDangerBubble());
 
-            }
+                    _burstTimer = 0f;   
 
-            // checks for button press to start timer
-            if (_btnPressed)
-            {   
-                BtnTimer();   
-            }
-            
-            // To blow the bubblegum
-            if (Input.GetKey(KeyCode.Space) && _btnPressed)
-            {
-                // Debug.Log("Blowing Bubble Gum");
-                IncreaseScale();
+                }
+
+                // checks for button press to start timer
+                if (_btnPressed)
+                {   
+                    BtnTimer();   
+                }
+                
+                // To blow the bubblegum
+                if (Input.GetKey(KeyCode.Space) && _btnPressed)
+                {
+                    // Debug.Log("Blowing Bubble Gum");
+                    IncreaseScale();
+
+                }
+                else
+                {
+                    DecreaseScale();
+                }
+
 
             }
             else
             {
-                DecreaseScale();
-            }
-
-
-        }
-        else
-        {
-            // Debug.Log("Times up!");
-            // Game Over
-            // save score
-            // "Win condition"
-            StopAllCoroutines();
-            _dangerSign.SetActive(false);
+                _gameWon = true;
+                _gameEnd = true;
+                _dangerSign.SetActive(false);
+            }  
         }
 
     }
@@ -247,10 +266,10 @@ public class BlowingScore : MonoBehaviour
                 {
                     Debug.Log("LOSER!!!");
                     // Bubble pops here
+                    _gameWon = false;
+                    _gameEnd = true;
                     _chewingScore = 0f;
-                    // Save score here a
                     // Lose Condition
-                    StopAllCoroutines();
                     _dangerSign.SetActive(false);
                 }
 
@@ -293,4 +312,18 @@ public class BlowingScore : MonoBehaviour
         return key;
     }
 
+    private IEnumerator EndGame(bool won)
+    {   
+        // Save Score
+        GameManager.SetBlowScore(_blowScore);
+        // Won or lose
+        // Debug.Log("Blowing screen bool "+won);
+        GameManager.SetHasWon(won);
+        // wait a secc
+        yield return new WaitForSeconds(1f);
+        // move to next scene
+        string next_scene = "EndGame";
+        SceneManager.LoadScene(next_scene);
+
+    }
 }
