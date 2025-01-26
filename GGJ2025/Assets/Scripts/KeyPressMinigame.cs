@@ -108,7 +108,11 @@ public class KeyPressMinigame : MonoBehaviour
                     else
                     {
                         //wrong key pressed
-                        score -= 0.5f;
+                        if(score > 0)
+                        {
+                            score -= 0.5f;
+
+                        }
 
                         randKey = RandomKey();
 
