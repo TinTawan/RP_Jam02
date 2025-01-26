@@ -10,6 +10,6 @@ public class Button : MonoBehaviour
     {
         SceneManager.LoadScene("Os");
         Debug.Log("Wuw");
-    }
+    } 
 
 }
