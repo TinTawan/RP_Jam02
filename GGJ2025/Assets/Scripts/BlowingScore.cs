@@ -9,7 +9,7 @@ public class BlowingScore : MonoBehaviour
     [Header("References")]
     [SerializeField] private GameObject _bubble;
     [SerializeField] private GameObject _dangerSign;
-    [SerializeField] private Animator dangerAnim;
+    [SerializeField] private Animator dangerAnim, gumAnim;
 
     [Header("UI References")]
     [SerializeField] private Slider _timerSlider;
@@ -264,6 +264,9 @@ public class BlowingScore : MonoBehaviour
 
                 if (_burstTimer >= _burstDuration)
                 {
+                    gumAnim.SetBool("popped", true);
+
+
                     Debug.Log("LOSER!!!");
                     // Bubble pops here
                     _gameWon = false;
