@@ -68,7 +68,7 @@ public class KeyPressMinigame : MonoBehaviour
 
 
         //save score to manager
-        GameManager.AddChewScore(score);
+        GameManager.SetChewScore(score);
 
         //move to next scene
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
