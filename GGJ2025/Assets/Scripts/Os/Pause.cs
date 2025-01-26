@@ -21,7 +21,8 @@ public class Pause : MonoBehaviour
                 
                 Stop();
             }
-            AudioManager.instance.PlaySfx("ClickE");
+           /* AudioManager.instance.PlaySfx("ClickE");
+            AudioManager.instance.PlayMusic("Blow");*/
         }
     }
     private void Start()
