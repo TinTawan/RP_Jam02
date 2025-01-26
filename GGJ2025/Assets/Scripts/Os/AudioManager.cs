@@ -50,6 +50,10 @@ public class AudioManager : MonoBehaviour
        
 
     }
+    public void StopMusic()
+    {
+        GameMusicSource.Pause();
+    }
     public void PlaySfx(string name)
     {
         Sounds_Game Sound = Array.Find(GameSfx, x => x.Name == name);

@@ -45,6 +45,7 @@ public class BlowingScore : MonoBehaviour
     ParticleSystem ps;
     ParticleSystem.Particle[] particles;
 
+    
 
     private void Awake()
     {
@@ -129,7 +130,7 @@ public class BlowingScore : MonoBehaviour
             // takes the score from the chewing phase to use as a timer.
             if (_chewingScore > 0f)
             {
-                AudioManager.instance.PlaySfx("ClickE");
+                
                 CheckForSpacePress();
                 
                 _chewingScore -= Time.deltaTime;
@@ -165,7 +166,12 @@ public class BlowingScore : MonoBehaviour
                 {
                     DecreaseScale();
                 }
-
+                if(Input.GetKeyDown(KeyCode.Space)){
+                    AudioManager.instance.PlayMusic("Blow");
+                }
+                if(Input.GetKeyUp(KeyCode.Space)){
+                    AudioManager.instance.StopMusic();
+                }
 
             }
             else
@@ -330,4 +336,7 @@ public class BlowingScore : MonoBehaviour
         SceneManager.LoadScene(next_scene);
 
     }
+
+    
+
 }
