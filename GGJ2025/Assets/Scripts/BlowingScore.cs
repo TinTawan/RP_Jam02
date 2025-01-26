@@ -8,7 +8,7 @@ public class BlowingScore : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private GameObject _bubble;
-    [SerializeField] private GameObject _dangerSign;
+    [SerializeField] private GameObject _dangerSign, helpText;
     [SerializeField] private Animator dangerAnim, gumAnim;
 
     [Header("UI References")]
@@ -120,6 +120,8 @@ public class BlowingScore : MonoBehaviour
         Debug.Log(randKey.ToString());
 
         _btnPressed = true;
+
+        helpText.SetActive(false);
     }
 
     private void BlowingTimer()
