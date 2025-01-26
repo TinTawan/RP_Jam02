@@ -18,14 +18,14 @@ public class GumChew : MonoBehaviour
     {
         if (Input.anyKeyDown)
         {
-            Vector2 dir = new(Random.Range(-1,1),Random.Range(0,1));
+            Vector2 dir = new(Random.Range(-1,1),Random.Range(0.5f,2f));
             MoveGum(dir);
         }
     }
 
     void MoveGum(Vector2 dir)
     {
-        rb.AddForce(dir * Random.value * force, ForceMode.Impulse);
+        rb.AddForce(/*Vector3.up **/ transform.up * dir * Random.value * force, ForceMode.Impulse);
     }
 
     
