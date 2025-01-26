@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class EndScreen : MonoBehaviour
 {
@@ -49,12 +50,16 @@ public class EndScreen : MonoBehaviour
     {
         // Load chweing scene 
         Debug.Log("Loading chewing scene :)");
+
+        SceneManager.LoadScene(1);
     }
 
     public void MainMenu()
     {
         // Load Menu scene 
         Debug.Log("Loading Main Menu scene :)");
+
+        SceneManager.LoadScene(0);
     }
 
     
