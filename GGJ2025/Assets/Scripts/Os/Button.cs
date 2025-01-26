@@ -10,6 +10,8 @@ public class Button : MonoBehaviour
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         Debug.Log("Wuw");
+        AudioManager.instance.PlaySfx("ClickA");
     } 
+    
 
 }

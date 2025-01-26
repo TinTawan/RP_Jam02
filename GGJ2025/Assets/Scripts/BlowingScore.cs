@@ -129,6 +129,7 @@ public class BlowingScore : MonoBehaviour
             // takes the score from the chewing phase to use as a timer.
             if (_chewingScore > 0f)
             {
+                AudioManager.instance.PlaySfx("ClickE");
                 CheckForSpacePress();
                 
                 _chewingScore -= Time.deltaTime;

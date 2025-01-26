@@ -18,5 +18,8 @@ public class Option_Button : MonoBehaviour
 
     }
 
-
+    public void Music()
+    {
+        AudioManager.instance.PlaySfx("ClickB");
+    }
 }
