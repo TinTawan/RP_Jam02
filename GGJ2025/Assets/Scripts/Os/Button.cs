@@ -8,7 +8,7 @@ public class Button : MonoBehaviour
 {
     public void PlayGame()
     {
-        SceneManager.LoadScene("Os");
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         Debug.Log("Wuw");
     } 
 
