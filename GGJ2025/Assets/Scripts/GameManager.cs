@@ -60,7 +60,7 @@ public class GameManager : MonoBehaviour
 
     public static void SetChewScore(float score)
     {
-        _chewScore = score;
+        _chewScore = 5 + score;
     }
 
     public static void SetBlowScore(float score)
