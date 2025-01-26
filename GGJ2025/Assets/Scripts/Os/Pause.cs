@@ -11,14 +11,17 @@ public class Pause : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
+            
             if (paused)
             {
                 Resume();
+                
             }
             else {
-
+                
                 Stop();
             }
+            AudioManager.instance.PlaySfx("ClickE");
         }
     }
     private void Start()
@@ -27,6 +30,7 @@ public class Pause : MonoBehaviour
     }
     public void Resume()
     {
+        
         MenuUI.SetActive(false);
         Time.timeScale = 1f;
         paused = false;
@@ -46,5 +50,7 @@ public class Pause : MonoBehaviour
             audioManager.GameMusicSource.Pause();
         }
     }
+
+    
 
 }
