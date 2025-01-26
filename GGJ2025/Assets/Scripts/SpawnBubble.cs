@@ -28,7 +28,10 @@ public class SpawnBubble : MonoBehaviour
 
         if (kpMinigame.GetPopBubble())
         {
+            //Debug.Log("Destry bubble");
+            //spawnedBubble = null;
             Destroy(spawnedBubble, 0.15f);
+            
         }
     }
 
