@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
     private static float _volume;
 
     private static float _blowScore;
+    private static bool hasWon;
 
 
     private void Awake()
@@ -57,13 +58,23 @@ public class GameManager : MonoBehaviour
         _volume = vol;
     }
 
-    public static void AddChewScore(float score)
+    public static void SetChewScore(float score)
     {
-        _chewScore += score;
+        _chewScore = score;
     }
 
-    public static void AddBlowScore(float score)
+    public static void SetBlowScore(float score)
     {
-        _blowScore += score;
+        _blowScore = score;
+    }
+
+    public static void SetHasWon(bool won)
+    {
+        hasWon = won;
+    }
+
+    public static bool GetHasWon()
+    {
+        return hasWon;
     }
 }
